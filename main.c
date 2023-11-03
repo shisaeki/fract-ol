@@ -25,7 +25,7 @@ typedef struct	s_vars
 	t_img	img;
 }		t_vars;
 
-int draw_fractol(t_vars *vars)
+int draw_mandelbrot(t_vars *vars)
 {
 	int	w, h;
 	float	x, y;
@@ -37,23 +37,64 @@ int draw_fractol(t_vars *vars)
 		w = 0;
 		while (w < IMG_SIZE)
 		{
-//			vars->img.data[h * IMG_SIZE + w] = 0XFFFFFF;
-//			w++;
-			x = (float)(w - IMG_SIZE / 2) / (float)IMG_SIZE;
-			y = (float)((h - IMG_SIZE / 2) / (float)IMG_SIZE) * (-1);
+			x = (float)(w - IMG_SIZE / 2) * 4 / (float)IMG_SIZE;
+			y = (float)(h - IMG_SIZE / 2) * (-4)/ (float)IMG_SIZE;
 			a = 0;
 			b = 0;
 			for (int i = 0; i < 50; i++)
 			{
-				a = a * a - b * b + x;
-				b = 2 * a * b + y;
+				float tmp_a = a * a - b * b + x;
+				float tmp_b = 2 * a * b + y;
+				a = tmp_a;
+				b = tmp_b;
 				if (a * a + b * b > 4)
 				{
-					vars->img.data[h * IMG_SIZE + w] = 0XFFFFFF;
+					vars->img.data[h * IMG_SIZE + w] = 0X000101 * (i * 5);
 					break;
 				}	
 			}
 			w++;	
+		}
+		h++;
+	}
+	mlx_put_image_to_window(vars->mlx.mlx_ptr, vars->mlx.win, vars->img.img_ptr, 0, 0);
+	return (0);
+}
+
+int draw_julia(t_vars *vars)
+{
+	int	w, h;
+	float	x, y;
+	float	c_x, c_y;
+	float	a, b;
+
+	c_x = 0.1;
+	c_y = 0.1;
+	h = 0;
+	while (h < IMG_SIZE)
+	{
+		w = 0;
+		while (w < IMG_SIZE)
+		{
+
+			x = (float)(w - IMG_SIZE / 2) * 4 / (float)IMG_SIZE;
+			y = (float)(h - IMG_SIZE / 2) * (-4)/ (float)IMG_SIZE;
+			a = x;
+			b = y;
+			for (int i = 0; i < 50; i++)
+			{
+				float tmp_a = a * a - b * b + c_x;
+				float tmp_b = 2 * a * b + c_y;
+				printf("a:%f b:%f\n", tmp_a, tmp_b);
+				a = tmp_a;
+				b = tmp_b;
+				if (a * a + b * b > 4)
+				{
+					vars->img.data[h * IMG_SIZE + w] = 0XFFFF;
+					break;
+				}
+			}
+			w++;
 		}
 		h++;
 	}
@@ -69,7 +110,7 @@ int main()
 	vars.mlx.win = mlx_new_window(vars.mlx.mlx_ptr, WIN_SIZE, WIN_SIZE, "fractol");
 	vars.img.img_ptr = mlx_new_image(vars.mlx.mlx_ptr, IMG_SIZE, IMG_SIZE);
 	vars.img.data = (int *)mlx_get_data_addr(vars.img.img_ptr, &vars.img.bpp, &vars.img.size_l, &vars.img.endian);
-	draw_fractol(&vars);
+	draw_julia(&vars);
 	mlx_loop(vars.mlx.mlx_ptr);
 
 	return (0);
