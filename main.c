@@ -68,8 +68,8 @@ int draw_julia(t_vars *vars)
 	float	c_x, c_y;
 	float	a, b;
 
-	c_x = 0.1;
-	c_y = 0.1;
+	c_x = -0.8;
+	c_y = 0.156;
 	h = 0;
 	while (h < IMG_SIZE)
 	{
@@ -81,16 +81,15 @@ int draw_julia(t_vars *vars)
 			y = (float)(h - IMG_SIZE / 2) * (-4)/ (float)IMG_SIZE;
 			a = x;
 			b = y;
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 100; i++)
 			{
 				float tmp_a = a * a - b * b + c_x;
 				float tmp_b = 2 * a * b + c_y;
-				printf("a:%f b:%f\n", tmp_a, tmp_b);
 				a = tmp_a;
 				b = tmp_b;
 				if (a * a + b * b > 4)
 				{
-					vars->img.data[h * IMG_SIZE + w] = 0XFFFF;
+					vars->img.data[h * IMG_SIZE + w] = 0X000101 * (i * 5);
 					break;
 				}
 			}
