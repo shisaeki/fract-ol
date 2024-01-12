@@ -1,4 +1,4 @@
-#include "fract-ol.h"
+#include "fractol.h"
 
 int draw_mandelbrot(t_vars *vars)
 {

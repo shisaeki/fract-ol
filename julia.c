@@ -1,4 +1,4 @@
-#include "fract-ol.h"
+#include "fractol.h"
 
 int draw_julia(t_vars *vars)
 {
